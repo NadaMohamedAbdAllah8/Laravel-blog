@@ -42,8 +42,8 @@ class NewUserResister extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
+            ->line('Hello!')
+            ->action('Go to the website', url('/'))
             ->line('Thank you for using our application!');
     }
 

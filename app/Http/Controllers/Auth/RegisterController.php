@@ -66,23 +66,21 @@ class RegisterController extends Controller
     {
         DB::beginTransaction();
 
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => bcrypt($data['password']),
+        ]);
+
+        DB::commit();
+
         try {
-
-            $user = User::create([
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'password' => bcrypt($data['password']),
-            ]);
-
             $user->notify(new NewUserResister($data['name']));
-
-            DB::commit();
-
-            return $user;
         } catch (\Exception $ex) {
-            DB::rollback();
-
             dd($ex->getMessage());
         }
+
+        return $user;
+
     }
 }
