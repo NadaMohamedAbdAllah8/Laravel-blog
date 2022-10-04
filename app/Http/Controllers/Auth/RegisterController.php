@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Notifications\NewUserResister;
+use App\Notifications\NewUserResisterNotification;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -72,13 +72,15 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
         ]);
 
-        DB::commit();
-
         try {
-            $user->notify(new NewUserResister($data['name']));
+            $user->notify(new NewUserResisterNotification());
+
+            //dd('email is sent, or added to the queue');
         } catch (\Exception $ex) {
             dd($ex->getMessage());
         }
+
+        DB::commit();
 
         return $user;
 

@@ -3,23 +3,24 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class NewUserResister extends Notification
+class NewUserResisterNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    private $user_name;
+    //  private $user_name;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($user_name)
+    public function __construct()
     {
-        $this->user_name = $user_name;
+
     }
 
     /**
@@ -42,7 +43,7 @@ class NewUserResister extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->line('Hello!')
+            ->line('Hello! ' . $notifiable->name)
             ->action('Go to the website', url('/'))
             ->line('Thank you for using our application!');
     }
